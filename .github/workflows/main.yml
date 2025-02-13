@@ -4,16 +4,20 @@ name: Daily Commit
 on:
   # Schedule the workflow to run daily at 15:30 UTC
   schedule:
-    - cron: '00 20 * * *'  # Format: minute hour day_of_month month day_of_week
+    - cron: '30 20 * * *'  # Format: minute hour day_of_month month day_of_week
   
   # Allow manual triggering of the workflow from GitHub Actions UI
   workflow_dispatch:
+
+permissions:
+      contents: write
 
 jobs:
   # Define a job named 'daily_commit'
   daily_commit:
     # Specify the type of runner to use
     runs-on: ubuntu-latest
+    
     
     steps:
       # Step 1: Check out the repository code
@@ -33,7 +37,9 @@ jobs:
       
       # Step 4: Stage, commit, and push changes to the repository
       - name: Commit and Push Changes
-        run: |
-          git add commit_log.txt  # Stage the updated log file
-          git commit -m "Daily commit: $(date)" || echo "No changes to commit"  # Create commit with timestamp or handle no changes
-          git push  # Push changes to the repository
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Use GitHub-provided token
+              run: |
+                git add commit_log.txt
+                git commit -m "Daily commit: $(date)" || echo "No changes to commit"
+                git push https://x-access-token:${GITHUB_TOKEN}@github.com/annimukherjee/iitm-tds-actions-cron.git HEAD:main
