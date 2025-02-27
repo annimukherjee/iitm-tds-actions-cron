@@ -4,7 +4,7 @@ name: Daily Commit
 on:
   # Schedule the workflow to run daily at 20:30 UTC
   schedule:
-    - cron: '30 20 * * *'  # Format: minute hour day_of_month month day_of_week
+    # - cron: '30 20 * * *'  # Format: minute hour day_of_month month day_of_week
   
   # Allow manual triggering of the workflow from GitHub Actions UI
   workflow_dispatch:
